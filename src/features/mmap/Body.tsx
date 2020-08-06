@@ -45,15 +45,6 @@ const Main = styled.main`
       button {
         margin-left: 0.5em;
       }
-
-      /* button.btn-danger {
-        background: #dc3545;
-
-        &:hover {
-          background-color: #c82333;
-          border-color: #bd2130;
-        }
-      } */
     }
   }
 `;

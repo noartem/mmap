@@ -8,6 +8,7 @@ import { styled } from "linaria/react";
 const Header = styled.header`
   display: flex;
   padding: 0.5em 0.75em;
+  height: 2.4em;
 
   input {
     border: none;
@@ -35,11 +36,13 @@ export function Search() {
         value={search}
         onChange={(e) => dispatch(goSearch(e.target.value))}
       />
-      {search === "" ? (
-        <div id="empty" />
-      ) : (
-        <Button onClick={() => dispatch(addNote(search))}>Add</Button>
-      )}
+      <Button
+        focusable
+        disabled={search === ""}
+        onClick={() => dispatch(addNote(search))}
+      >
+        Add
+      </Button>
     </Header>
   );
 }

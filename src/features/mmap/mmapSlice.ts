@@ -36,7 +36,7 @@ export const mmapSlice = createSlice({
       } else {
         state.notes.push({
           name: noteName.payload,
-          body: "...",
+          body: `# ${noteName.payload}!\n\nSome *text* goes here...`,
         });
         state.search = "";
       }

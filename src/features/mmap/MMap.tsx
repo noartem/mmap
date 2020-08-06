@@ -9,7 +9,7 @@ import { styled } from "linaria/react";
 const Section = styled.section`
   #mmap-body {
     display: flex;
-    height: calc(100vh - 52px);
+    height: calc(100vh - 3.44em);
     width: 100%;
     border-top: 1px solid rgba(0, 0, 0, 0.25);
 
