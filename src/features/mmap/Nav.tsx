@@ -1,8 +1,10 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { selectSearchingNotes, selectNote } from "./mmapSlice";
 import { styled } from "linaria/react";
 import { Clickable } from "reakit/Clickable";
+import { useShortcuts } from "react-shortcuts-hook";
+
+import { selectSearchingNotes, selectNote } from "./mmapSlice";
 
 const Navbar = styled.nav`
   width: 32%;
@@ -41,9 +43,34 @@ const Navbar = styled.nav`
   }
 `;
 
+function useNoteShortcuts() {
+  const notes = useSelector(selectSearchingNotes);
+  const dispatch = useDispatch();
+
+  const useShcut = (i: number) =>
+    useShortcuts(
+      ["control", "alt", String(i + 1)],
+      () => (i >= notes.length ? null : dispatch(selectNote(notes[i].name))),
+      [notes]
+    );
+
+  useShcut(0);
+  useShcut(1);
+  useShcut(2);
+  useShcut(3);
+  useShcut(4);
+  useShcut(5);
+  useShcut(6);
+  useShcut(7);
+  useShcut(8);
+  useShcut(9);
+}
+
 export function Nav() {
   const notes = useSelector(selectSearchingNotes);
   const dispatch = useDispatch();
+
+  useNoteShortcuts();
 
   return (
     <Navbar>

@@ -1,11 +1,12 @@
-import React, { useState, Fragment } from "react";
+import React, { useState, useRef, Fragment } from "react";
 import { useDispatch } from "react-redux";
 import { styled } from "linaria/react";
 import Markdown from "markdown-to-jsx";
 import { Button } from "reakit/Button";
 import { Input } from "reakit/Input";
+import { useShortcuts } from "react-shortcuts-hook";
 
-import { updateNote, deleteNote } from "./mmapSlice";
+import { updateNote, deleteNote, selectNote } from "./mmapSlice";
 import { Note } from "./note";
 import { Code } from "./code";
 
@@ -57,10 +58,14 @@ export function Body({ note }: IProps) {
   const dispatch = useDispatch();
   const [editingBody, setEditingBody] = useState("");
   const [editingName, setEditingName] = useState("");
+  const bodyInput = useRef<HTMLTextAreaElement>(null);
+
+  const notEditing = editingBody === "";
 
   const editNote = () => {
     setEditingName(note.name);
     setEditingBody(note.body);
+    bodyInput.current?.focus();
   };
 
   const saveNote = () => {
@@ -73,10 +78,21 @@ export function Body({ note }: IProps) {
     if (window.confirm("Are you sure?")) dispatch(deleteNote());
   };
 
+  useShortcuts(["control", "B"], () => (notEditing ? editNote() : saveNote()), [
+    note,
+    editingName,
+    editingBody,
+    bodyInput,
+  ]);
+
+  useShortcuts(["control", "M"], tryDeleteNote, []);
+
+  useShortcuts(["Escape"], () => dispatch(selectNote("")), []);
+
   return (
     <Main>
       <nav>
-        {editingBody === "" ? (
+        {notEditing ? (
           <h1>{note.name}</h1>
         ) : (
           <Input
@@ -86,7 +102,7 @@ export function Body({ note }: IProps) {
         )}
 
         <div className="controls">
-          {editingBody === "" ? (
+          {notEditing ? (
             <Fragment>
               <Button onClick={editNote}>Edit</Button>
               <Button
@@ -101,7 +117,7 @@ export function Body({ note }: IProps) {
           )}
         </div>
       </nav>
-      {editingBody === "" ? (
+      {notEditing ? (
         <div id="body_content" className="markdown-body">
           <Markdown
             children={note.body}
@@ -116,6 +132,9 @@ export function Body({ note }: IProps) {
         </div>
       ) : (
         <Input
+          name="body"
+          placeholder="Some note body.."
+          ref={bodyInput}
           value={editingBody}
           as="textarea"
           // @ts-ignore

@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { search as goSearch, addNote, selectMMap } from "./mmapSlice";
 import { Button } from "reakit/Button";
 import { Input } from "reakit/Input";
 import { styled } from "linaria/react";
+import { useShortcuts } from "react-shortcuts-hook";
+
+import { search as goSearch, addNote, selectMMap } from "./mmapSlice";
 
 const Header = styled.header`
   display: flex;
@@ -14,25 +16,23 @@ const Header = styled.header`
     border: none;
     margin: 0 0.5em 0 0 !important;
   }
-
-  svg {
-    margin: auto 0;
-  }
-
-  span {
-    display: flex;
-  }
 `;
 
 export function Search() {
   const { search } = useSelector(selectMMap);
   const dispatch = useDispatch();
+  const searchInput = useRef<HTMLInputElement>(null);
+
+  useShortcuts(["control", "I"], () => searchInput.current?.focus(), [
+    searchInput,
+  ]);
 
   return (
     <Header>
       <Input
+        ref={searchInput}
         name="search"
-        placeholder="Search..."
+        placeholder="Search... (Ctrl + I to focus)"
         value={search}
         onChange={(e) => dispatch(goSearch(e.target.value))}
       />

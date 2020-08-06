@@ -22,6 +22,7 @@
     "react-dom": "^16.13.1",
     "react-redux": "^7.2.1",
     "react-scripts": "3.4.1",
+    "react-shortcuts-hook": "^1.1.0",
     "react-syntax-highlighter": "^13.2.1",
     "reakit": "^1.1.2",
     "reakit-system-bootstrap": "^0.12.1",
