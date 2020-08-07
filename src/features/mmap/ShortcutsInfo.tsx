@@ -1,7 +1,7 @@
 import React from "react";
-import { styled } from "linaria/react";
+import { css } from "linaria";
 
-const Body = styled.div`
+const styleClass = css`
   width: 100%;
 
   p {
@@ -9,21 +9,24 @@ const Body = styled.div`
   }
 `;
 
-export function ShortcutsInfo() {
+export default function ShortcutsInfo() {
   return (
-    <Body>
+    <div className={styleClass}>
       <p>
-        <b> Ctrl + Alt + $Number</b> open $Number note
+        <b> Alt + S</b> focus search input
+      </p>
+      <p>
+        <b> Control + Alt + $number</b> open <i>$number</i> note
       </p>
       <p>
         <b> Ctrl + B</b> toggle edit mode
       </p>
       <p>
-        <b> Ctrl + M</b> delete note
+        <b> Alt + I </b> delete note
       </p>
       <p>
         <b> Escape </b> close note
       </p>
-    </Body>
+    </div>
   );
 }

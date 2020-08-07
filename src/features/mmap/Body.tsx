@@ -1,6 +1,6 @@
 import React, { useState, useRef, Fragment } from "react";
-import { useDispatch } from "react-redux";
-import { styled } from "linaria/react";
+import { connect, ConnectedProps } from "react-redux";
+import { css } from "linaria";
 import Markdown from "markdown-to-jsx";
 import { Button } from "reakit/Button";
 import { Input } from "reakit/Input";
@@ -10,7 +10,7 @@ import { updateNote, deleteNote, selectNote } from "./mmapSlice";
 import { Note } from "./note";
 import { Code } from "./code";
 
-const Main = styled.main`
+const stylesClass = css`
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -50,12 +50,7 @@ const Main = styled.main`
   }
 `;
 
-interface IProps {
-  note: Note;
-}
-
-export function Body({ note }: IProps) {
-  const dispatch = useDispatch();
+function Body({ note, updateNote, deleteNote, closeNote }: IProps) {
   const [editingBody, setEditingBody] = useState("");
   const [editingName, setEditingName] = useState("");
   const bodyInput = useRef<HTMLTextAreaElement>(null);
@@ -69,13 +64,13 @@ export function Body({ note }: IProps) {
   };
 
   const saveNote = () => {
-    dispatch(updateNote({ name: editingName, body: editingBody }));
+    updateNote({ name: editingName, body: editingBody });
     setEditingName("");
     setEditingBody("");
   };
 
   const tryDeleteNote = () => {
-    if (window.confirm("Are you sure?")) dispatch(deleteNote());
+    if (window.confirm("Are you sure?")) deleteNote();
   };
 
   useShortcuts(["control", "B"], () => (notEditing ? editNote() : saveNote()), [
@@ -85,12 +80,12 @@ export function Body({ note }: IProps) {
     bodyInput,
   ]);
 
-  useShortcuts(["control", "M"], tryDeleteNote, []);
+  useShortcuts(["alt", "I"], tryDeleteNote, []);
 
-  useShortcuts(["Escape"], () => dispatch(selectNote("")), []);
+  useShortcuts(["Escape"], () => closeNote(), []);
 
   return (
-    <Main>
+    <main className={stylesClass}>
       <nav>
         {notEditing ? (
           <h1>{note.name}</h1>
@@ -141,6 +136,18 @@ export function Body({ note }: IProps) {
           onChange={(e) => setEditingBody(e.target.value)}
         />
       )}
-    </Main>
+    </main>
   );
 }
+
+const connector = connect(null, (dispatch) => ({
+  updateNote: (note: Note) => dispatch(updateNote(note)),
+  deleteNote: () => dispatch(deleteNote()),
+  closeNote: () => dispatch(selectNote("")),
+}));
+
+interface IProps extends ConnectedProps<typeof connector> {
+  note: Note;
+}
+
+export default connector(Body);

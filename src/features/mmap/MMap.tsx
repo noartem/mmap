@@ -1,14 +1,14 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { styled } from "linaria/react";
+import { css } from "linaria";
 
 import { selectCurrentNote } from "./mmapSlice";
-import { ShortcutsInfo } from "./ShortcutsInfo";
-import { Search } from "./Search";
-import { Nav } from "./Nav";
-import { Body } from "./Body";
+import ShortcutsInfo from "./ShortcutsInfo";
+import Search from "./Search";
+import Nav from "./Nav";
+import Body from "./Body";
 
-const BodyWrap = styled.div`
+const stylesClass = css`
   display: flex;
   height: calc(100vh - 3.44em);
   width: 100%;
@@ -21,10 +21,10 @@ export function MMap() {
   return (
     <section>
       <Search />
-      <BodyWrap>
+      <div className={stylesClass}>
         <Nav />
         {note ? <Body note={note} /> : <ShortcutsInfo />}
-      </BodyWrap>
+      </div>
     </section>
   );
 }

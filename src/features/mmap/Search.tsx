@@ -1,13 +1,14 @@
 import React, { useRef } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { connect, ConnectedProps } from "react-redux";
 import { Button } from "reakit/Button";
 import { Input } from "reakit/Input";
-import { styled } from "linaria/react";
+import { css } from "linaria";
 import { useShortcuts } from "react-shortcuts-hook";
 
+import { RootState } from "../../app/store";
 import { search as goSearch, addNote, selectMMap } from "./mmapSlice";
 
-const Header = styled.header`
+const styleClass = css`
   display: flex;
   padding: 0.5em 0.75em;
   height: 2.4em;
@@ -18,31 +19,39 @@ const Header = styled.header`
   }
 `;
 
-export function Search() {
-  const { search } = useSelector(selectMMap);
-  const dispatch = useDispatch();
+function Search({ search, goSearch, addNote }: IProps) {
   const searchInput = useRef<HTMLInputElement>(null);
 
-  useShortcuts(["control", "I"], () => searchInput.current?.focus(), [
-    searchInput,
-  ]);
+  useShortcuts(["alt", "S"], () => searchInput.current?.focus(), [searchInput]);
 
   return (
-    <Header>
+    <header className={styleClass}>
       <Input
         ref={searchInput}
         name="search"
-        placeholder="Search... (Ctrl + I to focus)"
+        placeholder="Search... (Alt + S to focus)"
         value={search}
-        onChange={(e) => dispatch(goSearch(e.target.value))}
+        onChange={(e) => goSearch(e.target.value)}
       />
       <Button
         focusable
         disabled={search === ""}
-        onClick={() => dispatch(addNote(search))}
+        onClick={() => addNote(search)}
       >
         Add
       </Button>
-    </Header>
+    </header>
   );
 }
+
+const connector = connect(
+  (state: RootState) => ({ search: selectMMap(state).search }),
+  (dispatch) => ({
+    goSearch: (query: string) => dispatch(goSearch(query)),
+    addNote: (query: string) => dispatch(addNote(query)),
+  })
+);
+
+type IProps = ConnectedProps<typeof connector>;
+
+export default connector(Search);

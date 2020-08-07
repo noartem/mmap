@@ -1,12 +1,13 @@
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { styled } from "linaria/react";
+import { connect, ConnectedProps } from "react-redux";
+import { css } from "linaria";
 import { Clickable } from "reakit/Clickable";
 import { useShortcuts } from "react-shortcuts-hook";
 
+import { RootState } from "../../app/store";
 import { selectSearchingNotes, selectNote } from "./mmapSlice";
 
-const Navbar = styled.nav`
+const styleClass = css`
   width: 32%;
   border-right: 1px solid rgba(0, 0, 0, 0.25);
   overflow-y: auto;
@@ -43,14 +44,11 @@ const Navbar = styled.nav`
   }
 `;
 
-function useNoteShortcuts() {
-  const notes = useSelector(selectSearchingNotes);
-  const dispatch = useDispatch();
-
+function useNoteShortcuts({ notes, selectNote }: IProps) {
   const useShcut = (i: number) =>
     useShortcuts(
       ["control", "alt", String(i + 1)],
-      () => (i >= notes.length ? null : dispatch(selectNote(notes[i].name))),
+      () => (i >= notes.length ? null : selectNote(notes[i].name)),
       [notes]
     );
 
@@ -66,23 +64,31 @@ function useNoteShortcuts() {
   useShcut(9);
 }
 
-export function Nav() {
-  const notes = useSelector(selectSearchingNotes);
-  const dispatch = useDispatch();
-
-  useNoteShortcuts();
+function Nav({ notes, selectNote }: IProps) {
+  useNoteShortcuts({ notes, selectNote });
 
   return (
-    <Navbar>
+    <div className={styleClass}>
       <ul>
         {notes.map((note) => (
           <li title={note.name} key={note.name}>
-            <Clickable onClick={() => dispatch(selectNote(note.name))}>
+            <Clickable onClick={() => selectNote(note.name)}>
               {note.name}
             </Clickable>
           </li>
         ))}
       </ul>
-    </Navbar>
+    </div>
   );
 }
+
+const connector = connect(
+  (state: RootState) => ({ notes: selectSearchingNotes(state) }),
+  (dispatch) => ({
+    selectNote: (name: string) => dispatch(selectNote(name)),
+  })
+);
+
+type IProps = ConnectedProps<typeof connector>;
+
+export default connector(Nav);
