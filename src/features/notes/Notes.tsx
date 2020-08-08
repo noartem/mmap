@@ -1,8 +1,7 @@
 import React from "react";
-import { useSelector } from "react-redux";
 import { css } from "linaria";
+import { Switch, Route, useRouteMatch } from "react-router-dom";
 
-import { selectCurrentNote } from "./mmapSlice";
 import ShortcutsInfo from "./ShortcutsInfo";
 import Search from "./Search";
 import Nav from "./Nav";
@@ -15,16 +14,26 @@ const stylesClass = css`
   border-top: 1px solid rgba(0, 0, 0, 0.25);
 `;
 
-export function MMap() {
-  const note = useSelector(selectCurrentNote);
+function Notes() {
+  let { path, url } = useRouteMatch();
 
   return (
     <section>
       <Search />
       <div className={stylesClass}>
-        <Nav />
-        {note ? <Body note={note} /> : <ShortcutsInfo />}
+        <Nav url={url} />
+
+        <Switch>
+          <Route exact path={path}>
+            <ShortcutsInfo />
+          </Route>
+          <Route path={`${path}/:noteId`}>
+            <Body />
+          </Route>
+        </Switch>
       </div>
     </section>
   );
 }
+
+export default Notes;

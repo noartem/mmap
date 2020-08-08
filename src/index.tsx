@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import { store } from "./app/store";
+import { BrowserRouter as Router } from "react-router-dom";
 import { Provider as ReduxProvider } from "react-redux";
 import { Provider as ReakitProvider } from "reakit";
 import * as system from "reakit-system-bootstrap";
@@ -12,7 +13,9 @@ ReactDOM.render(
   <React.StrictMode>
     <ReduxProvider store={store}>
       <ReakitProvider unstable_system={system}>
-        <App />
+        <Router>
+          <App />
+        </Router>
       </ReakitProvider>
     </ReduxProvider>
   </React.StrictMode>,

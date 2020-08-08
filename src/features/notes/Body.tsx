@@ -1,13 +1,14 @@
 import React, { useState, useRef, Fragment } from "react";
-import { connect, ConnectedProps } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { css } from "linaria";
 import Markdown from "markdown-to-jsx";
 import { Button } from "reakit/Button";
 import { Input } from "reakit/Input";
-import { useShortcuts } from "react-shortcuts-hook";
+import { useParams, useHistory } from "react-router-dom";
 
-import { updateNote, deleteNote, selectNote } from "./mmapSlice";
-import { Note } from "./note";
+import { useShortcut } from "../../utils";
+
+import { selectNote, updateNote, deleteNote } from "./notesSlice";
 import { Code } from "./code";
 
 const stylesClass = css`
@@ -50,7 +51,13 @@ const stylesClass = css`
   }
 `;
 
-function Body({ note, updateNote, deleteNote, closeNote }: IProps) {
+function Body() {
+  const { noteId } = useParams<{ noteId: string }>();
+  const note = useSelector(selectNote(noteId));
+
+  const history = useHistory();
+  const dispatch = useDispatch();
+
   const [editingBody, setEditingBody] = useState("");
   const [editingName, setEditingName] = useState("");
   const bodyInput = useRef<HTMLTextAreaElement>(null);
@@ -58,31 +65,42 @@ function Body({ note, updateNote, deleteNote, closeNote }: IProps) {
   const notEditing = editingBody === "";
 
   const editNote = () => {
+    if (!note) return;
+
     setEditingName(note.name);
     setEditingBody(note.body);
     bodyInput.current?.focus();
   };
 
   const saveNote = () => {
-    updateNote({ name: editingName, body: editingBody });
+    if (!note) return;
+
+    dispatch(updateNote({ id: note.id, name: editingName, body: editingBody }));
     setEditingName("");
     setEditingBody("");
   };
 
   const tryDeleteNote = () => {
-    if (window.confirm("Are you sure?")) deleteNote();
+    if (note && window.confirm("Are you sure?")) dispatch(deleteNote(note.id));
   };
 
-  useShortcuts(["control", "B"], () => (notEditing ? editNote() : saveNote()), [
+  const closeNote = () => history.push("/notes");
+
+  useShortcut("ctrl+b", () => (notEditing ? editNote() : saveNote()), [
     note,
     editingName,
     editingBody,
     bodyInput,
   ]);
 
-  useShortcuts(["alt", "I"], tryDeleteNote, []);
+  useShortcut("alt+i", tryDeleteNote, []);
 
-  useShortcuts(["Escape"], () => closeNote(), []);
+  useShortcut("escape", closeNote, []);
+
+  if (!note) {
+    closeNote();
+    return <p>Redirecting...</p>;
+  }
 
   return (
     <main className={stylesClass}>
@@ -140,14 +158,4 @@ function Body({ note, updateNote, deleteNote, closeNote }: IProps) {
   );
 }
 
-const connector = connect(null, (dispatch) => ({
-  updateNote: (note: Note) => dispatch(updateNote(note)),
-  deleteNote: () => dispatch(deleteNote()),
-  closeNote: () => dispatch(selectNote("")),
-}));
-
-interface IProps extends ConnectedProps<typeof connector> {
-  note: Note;
-}
-
-export default connector(Body);
+export default Body;

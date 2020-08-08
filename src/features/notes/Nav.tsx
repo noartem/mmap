@@ -1,11 +1,11 @@
 import React from "react";
-import { connect, ConnectedProps } from "react-redux";
+import { useSelector } from "react-redux";
 import { css } from "linaria";
-import { Clickable } from "reakit/Clickable";
-import { useShortcuts } from "react-shortcuts-hook";
+import { Link, useHistory } from "react-router-dom";
 
-import { RootState } from "../../app/store";
-import { selectSearchingNotes, selectNote } from "./mmapSlice";
+import { useShortcut } from "../../utils";
+
+import { selectSearchingNotes } from "./notesSlice";
 
 const styleClass = css`
   width: 32%;
@@ -44,11 +44,14 @@ const styleClass = css`
   }
 `;
 
-function useNoteShortcuts({ notes, selectNote }: IProps) {
+function useNoteShortcuts(url: string) {
+  const notes = useSelector(selectSearchingNotes);
+  const history = useHistory();
+
   const useShcut = (i: number) =>
-    useShortcuts(
-      ["control", "alt", String(i + 1)],
-      () => (i >= notes.length ? null : selectNote(notes[i].name)),
+    useShortcut(
+      `ctrl+alt+${String(i + 1)}`,
+      () => (i >= notes.length ? null : history.push(`${url}/${notes[i].id}`)),
       [notes]
     );
 
@@ -64,17 +67,17 @@ function useNoteShortcuts({ notes, selectNote }: IProps) {
   useShcut(9);
 }
 
-function Nav({ notes, selectNote }: IProps) {
-  useNoteShortcuts({ notes, selectNote });
+function Nav({ url }: IProps) {
+  const notes = useSelector(selectSearchingNotes);
+
+  useNoteShortcuts(url);
 
   return (
     <div className={styleClass}>
       <ul>
         {notes.map((note) => (
-          <li title={note.name} key={note.name}>
-            <Clickable onClick={() => selectNote(note.name)}>
-              {note.name}
-            </Clickable>
+          <li title={note.name} key={note.id}>
+            <Link to={`${url}/${note.id}`}>{note.name}</Link>
           </li>
         ))}
       </ul>
@@ -82,13 +85,8 @@ function Nav({ notes, selectNote }: IProps) {
   );
 }
 
-const connector = connect(
-  (state: RootState) => ({ notes: selectSearchingNotes(state) }),
-  (dispatch) => ({
-    selectNote: (name: string) => dispatch(selectNote(name)),
-  })
-);
+interface IProps {
+  url: string;
+}
 
-type IProps = ConnectedProps<typeof connector>;
-
-export default connector(Nav);
+export default Nav;

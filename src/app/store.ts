@@ -1,14 +1,22 @@
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
-import mmapReducer from "../features/mmap/mmapSlice";
+import notesReducer from "../features/notes/notesSlice";
+import boardReducer from "../features/board/boardSlice";
 
 export const store = configureStore({
   reducer: {
-    mmap: mmapReducer,
+    notes: notesReducer,
+    board: boardReducer,
   },
+  ...optionalPreloadedState(),
 });
 
+function optionalPreloadedState() {
+  const ls = localStorage.getItem("redux-store");
+  return ls === "" || ls === null ? {} : { preloadedState: JSON.parse(ls) };
+}
+
 store.subscribe(() =>
-  localStorage.setItem("mmap-store", JSON.stringify(store.getState().mmap))
+  localStorage.setItem("redux-store", JSON.stringify(store.getState()))
 );
 
 export type RootState = ReturnType<typeof store.getState>;

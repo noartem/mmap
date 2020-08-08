@@ -3,10 +3,11 @@ import { connect, ConnectedProps } from "react-redux";
 import { Button } from "reakit/Button";
 import { Input } from "reakit/Input";
 import { css } from "linaria";
-import { useShortcuts } from "react-shortcuts-hook";
+
+import { useShortcut } from "../../utils";
 
 import { RootState } from "../../app/store";
-import { search as goSearch, addNote, selectMMap } from "./mmapSlice";
+import { search, addNote, selectNotesQuery } from "./notesSlice";
 
 const styleClass = css`
   display: flex;
@@ -19,10 +20,10 @@ const styleClass = css`
   }
 `;
 
-function Search({ search, goSearch, addNote }: IProps) {
+function Search({ query, search, addNote }: IProps) {
   const searchInput = useRef<HTMLInputElement>(null);
 
-  useShortcuts(["alt", "S"], () => searchInput.current?.focus(), [searchInput]);
+  useShortcut("alt+s", () => searchInput.current?.focus(), [searchInput]);
 
   return (
     <header className={styleClass}>
@@ -30,14 +31,10 @@ function Search({ search, goSearch, addNote }: IProps) {
         ref={searchInput}
         name="search"
         placeholder="Search... (Alt + S to focus)"
-        value={search}
-        onChange={(e) => goSearch(e.target.value)}
+        value={query}
+        onChange={(e) => search(e.target.value)}
       />
-      <Button
-        focusable
-        disabled={search === ""}
-        onClick={() => addNote(search)}
-      >
+      <Button focusable disabled={query === ""} onClick={() => addNote(query)}>
         Add
       </Button>
     </header>
@@ -45,9 +42,9 @@ function Search({ search, goSearch, addNote }: IProps) {
 }
 
 const connector = connect(
-  (state: RootState) => ({ search: selectMMap(state).search }),
+  (state: RootState) => ({ query: selectNotesQuery(state) }),
   (dispatch) => ({
-    goSearch: (query: string) => dispatch(goSearch(query)),
+    search: (query: string) => dispatch(search(query)),
     addNote: (query: string) => dispatch(addNote(query)),
   })
 );
