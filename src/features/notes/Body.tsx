@@ -12,7 +12,7 @@ import { selectNote, updateNote, deleteNote } from "./notesSlice";
 import { Code } from "./code";
 
 const stylesClass = css`
-  width: 100%;
+  width: 68%;
   display: flex;
   flex-direction: column;
 
@@ -33,10 +33,12 @@ const stylesClass = css`
   }
 
   nav {
-    border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+    border-bottom: 1px solid #006dff;
     display: flex;
 
     h1 {
+      overflow: hidden;
+      text-overflow: ellipsis;
       margin: auto 0;
     }
 
@@ -103,10 +105,10 @@ function Body() {
   }
 
   return (
-    <main className={stylesClass}>
+    <div className={stylesClass}>
       <nav>
         {notEditing ? (
-          <h1>{note.name}</h1>
+          <h1 title={note.name}>{note.name}</h1>
         ) : (
           <Input
             value={editingName}
@@ -154,7 +156,7 @@ function Body() {
           onChange={(e) => setEditingBody(e.target.value)}
         />
       )}
-    </main>
+    </div>
   );
 }
 

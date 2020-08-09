@@ -2,8 +2,10 @@ import React from "react";
 import { css } from "linaria";
 
 const stylesClass = css`
+  padding: 1em 1.5em;
   h1 {
-    color: red;
+    margin: 0;
+    color: #ff0033;
   }
 `;
 

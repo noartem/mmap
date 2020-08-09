@@ -9,7 +9,7 @@ import { selectSearchingNotes } from "./notesSlice";
 
 const styleClass = css`
   width: 32%;
-  border-right: 1px solid rgba(0, 0, 0, 0.25);
+  border-right: 1px solid #006dff;
   overflow-y: auto;
   background: #f8f9fa !important;
 
@@ -20,18 +20,17 @@ const styleClass = css`
     li {
       list-style: none;
 
-      button {
+      a {
+        display: block;
         padding: 0.5em 0.75em;
+
         overflow: hidden;
         text-overflow: ellipsis;
-        border: none;
-        background: inherit;
-        width: 100%;
-        text-align: left;
-        cursor: pointer;
         font-size: 16px;
-
-        transition: 0.4s;
+        text-decoration: none;
+        text-align: left;
+        color: inherit;
+        transition: 0.1s;
 
         &:focus,
         &:hover,

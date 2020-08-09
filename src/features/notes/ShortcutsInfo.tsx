@@ -2,7 +2,7 @@ import React from "react";
 import { css } from "linaria";
 
 const styleClass = css`
-  width: 100%;
+  width: 68%;
 
   p {
     padding: 1em 1.5em;

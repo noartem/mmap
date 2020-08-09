@@ -8,19 +8,23 @@ import Nav from "./Nav";
 import Body from "./Body";
 
 const stylesClass = css`
-  display: flex;
-  height: calc(100vh - 3.44em);
-  width: 100%;
-  border-top: 1px solid rgba(0, 0, 0, 0.25);
+  height: 100%;
+
+  .nav-and-body {
+    display: flex;
+    height: 100%;
+    height: calc(100vh - 3.44em * 2);
+    border-top: 1px solid #006dff;
+  }
 `;
 
 function Notes() {
   let { path, url } = useRouteMatch();
 
   return (
-    <section>
+    <section className={stylesClass}>
       <Search />
-      <div className={stylesClass}>
+      <div className="nav-and-body">
         <Nav url={url} />
 
         <Switch>
