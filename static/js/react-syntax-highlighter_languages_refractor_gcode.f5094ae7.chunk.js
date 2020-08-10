@@ -1,0 +1,2 @@
+(this.webpackJsonpmmap=this.webpackJsonpmmap||[]).push([[62],{277:function(t,e,a){"use strict";function n(t){t.languages.gcode={comment:/;.*|\B\(.*?\)\B/,string:{pattern:/"(?:""|[^"])*"/,greedy:!0},keyword:/\b[GM]\d+(?:\.\d+)?\b/,property:/\b[A-Z]/,checksum:{pattern:/\*\d+/,alias:"punctuation"},punctuation:/:/}}t.exports=n,n.displayName="gcode",n.aliases=[]}}]);
+//# sourceMappingURL=react-syntax-highlighter_languages_refractor_gcode.f5094ae7.chunk.js.map
