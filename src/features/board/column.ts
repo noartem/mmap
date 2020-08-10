@@ -5,8 +5,16 @@ export interface Card {
   tags: string[];
 }
 
+export interface Cards {
+  [id: string]: Card;
+}
+
 export interface Column {
   id: string;
   name: string;
-  cards: Card[];
+  cardsIds: string[];
+}
+
+export interface Columns {
+  [id: string]: Column;
 }

@@ -13,7 +13,7 @@ const stylesClass = css`
   .nav-and-body {
     display: flex;
     height: 100%;
-    height: calc(100vh - 3.44em * 2);
+    height: calc(100vh - 6.07em);
     border-top: 1px solid #006dff;
   }
 `;

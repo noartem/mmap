@@ -1,6 +1,8 @@
 import React, { Suspense, lazy } from "react";
-import { Switch, Route, Link } from "react-router-dom";
+import { Switch, Route, Link, useHistory } from "react-router-dom";
 import { css } from "linaria";
+import { BookIcon } from "@primer/octicons-react";
+import { useShortcut } from "./utils";
 
 const Notes = lazy(() => import("./features/notes/Notes"));
 const Board = lazy(() => import("./features/board/Board"));
@@ -24,13 +26,14 @@ const stylesClass = css`
       }
     }
 
-    h1 {
+    .logo {
       font-size: 1.17em;
       background: #006dff;
       margin: 0;
-      padding: 0.83em 0.75em;
+      padding: 0.4em 0.8em 0.3em 0.8em;
       a {
         color: white !important;
+        display: flex;
       }
     }
 
@@ -47,19 +50,22 @@ const stylesClass = css`
       }
     }
   }
-
-  main {
-    height: calc(100vh - 3.44em);
-  }
 `;
 
 function App() {
+  const history = useHistory();
+
+  useShortcut("ctrl+shift+1", () => history.push("/notes"));
+  useShortcut("ctrl+shift+2", () => history.push("/board"));
+
   return (
     <div className={stylesClass}>
       <nav className="routes">
-        <h1>
-          <Link to="/">MindMap</Link>
-        </h1>
+        <div className="logo">
+          <Link to="/">
+            <BookIcon size={28} />
+          </Link>
+        </div>
         <ul>
           <li>
             <Link to="/notes">Notes</Link>
