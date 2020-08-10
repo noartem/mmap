@@ -1,9 +1,9 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { css } from "linaria";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 
-import { useShortcut } from "../../utils";
+import { useShortcut, useRoutePush } from "../../utils";
 
 import { selectSearchingNotes } from "./notesSlice";
 
@@ -45,13 +45,13 @@ const styleClass = css`
 
 function useNoteShortcuts(url: string) {
   const notes = useSelector(selectSearchingNotes);
-  const history = useHistory();
+  const push = useRoutePush();
 
   const useShcut = (i: number) =>
     useShortcut(
       `ctrl+alt+${String(i + 1)}`,
-      () => (i >= notes.length ? null : history.push(`${url}/${notes[i].id}`)),
-      [notes]
+      () => (i >= notes.length ? null : push(`${url}/${notes[i].id}`)),
+      [notes, push]
     );
 
   useShcut(0);

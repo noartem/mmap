@@ -4,9 +4,9 @@ import { css } from "linaria";
 import Markdown from "markdown-to-jsx";
 import { Button } from "reakit/Button";
 import { Input } from "reakit/Input";
-import { useParams, useHistory } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
-import { useShortcut } from "../../utils";
+import { useShortcut, useRoutePush } from "../../utils";
 
 import { selectNote, updateNote, deleteNote } from "./notesSlice";
 import { Code } from "./code";
@@ -57,7 +57,7 @@ function Body() {
   const { noteId } = useParams<{ noteId: string }>();
   const note = useSelector(selectNote(noteId));
 
-  const history = useHistory();
+  const push = useRoutePush();
   const dispatch = useDispatch();
 
   const [editingBody, setEditingBody] = useState("");
@@ -86,7 +86,7 @@ function Body() {
     if (note && window.confirm("Are you sure?")) dispatch(deleteNote(note.id));
   };
 
-  const closeNote = () => history.push("/notes");
+  const closeNote = () => push("/notes");
 
   useShortcut("ctrl+b", () => (notEditing ? editNote() : saveNote()), [
     note,

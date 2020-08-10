@@ -13,7 +13,7 @@ ReactDOM.render(
   <React.StrictMode>
     <ReduxProvider store={store}>
       <ReakitProvider unstable_system={system}>
-        <Router>
+        <Router basename="/mmap">
           <App />
         </Router>
       </ReakitProvider>

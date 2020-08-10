@@ -19,7 +19,7 @@ const Container = styled.div`
   }
 `;
 
-const Title = styled.h3`
+const Title = styled.span`
   margin: 0;
 
   button {
