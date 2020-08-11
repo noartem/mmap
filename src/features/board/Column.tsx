@@ -3,7 +3,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { styled } from "linaria/react";
 import { Clickable } from "reakit/Clickable";
 import { Input } from "reakit/Input";
-import { GrabberIcon } from "@primer/octicons-react";
+import { useMenuState, Menu, MenuItem, MenuButton } from "reakit/Menu";
+import { GrabberIcon, KebabHorizontalIcon } from "@primer/octicons-react";
 import {
   Container as DNDContainer,
   Draggable,
@@ -16,12 +17,15 @@ import {
   tempAddCard,
   moveCard,
   editColumn,
+  deleteColumn,
 } from "./boardSlice";
+import AddCard from "./AddCard";
 import Card from "./Card";
 
 interface IProps {
   columnId: string;
-  index: number;
+  isDragging: boolean;
+  setIsDragging: (val: boolean) => void;
 }
 
 const Container = styled.li`
@@ -34,6 +38,7 @@ const Container = styled.li`
 `;
 
 const Header = styled.div`
+  font-size: 14px;
   display: flex;
 
   .column-drag-handle {
@@ -43,30 +48,46 @@ const Header = styled.div`
 
   input {
     font-weight: 400;
-    /* border: 0;
-    padding: 0; */
     background: inherit;
-    font-size: 18px;
+  }
+
+  .column-menu {
+    display: flex;
+    margin: 0 0 0 auto;
+
+    button.menu-button {
+      border: none;
+      background: none !important;
+      margin: auto 0 auto 0.5em;
+      color: #000 !important;
+      padding: 0;
+      svg {
+        width: 16px;
+        height: 16px;
+        margin: 0;
+        display: none;
+      }
+    }
   }
 `;
 
 const Title = styled.h2`
-  font-weight: 400;
   margin: 0;
   display: flex;
 
   button {
-    font-size: 18px;
     border: none;
     background: inherit;
     cursor: pointer;
     margin: auto;
     padding: 0;
     font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
   }
 `;
 
-const Cards = styled.ul`
+const Cards = styled.ul<{ isDragging: boolean }>`
   list-style: none;
   margin: 0;
   padding: 0;
@@ -88,13 +109,20 @@ const Cards = styled.ul`
     transform: rotate(7deg);
     cursor: grabbing;
   }
+
+  .smooth-dnd-container {
+    transition: 0.2s;
+    min-height: ${({ isDragging }) => (isDragging ? "30px" : "0")};
+  }
 `;
 
-function Column({ columnId }: IProps) {
+function Column({ columnId, isDragging, setIsDragging }: IProps) {
   const column = useSelector(selectColumn(columnId));
   const inputRef = useRef<HTMLInputElement>(null);
   const [inputName, setInputName] = useState("");
+
   const dispatch = useDispatch();
+  const menu = useMenuState();
 
   const startEditing = () => {
     setInputName(column.name);
@@ -105,6 +133,9 @@ function Column({ columnId }: IProps) {
     dispatch(editColumn({ columnId, newName: inputName }));
     setInputName("");
   };
+
+  const tryDeleteColumn = () =>
+    window.confirm("Are you sure?") && dispatch(deleteColumn(columnId));
 
   const onCardDrop = ({
     removedIndex: oldIndex,
@@ -150,8 +181,21 @@ function Column({ columnId }: IProps) {
             <Clickable onClick={startEditing}>{column.name}</Clickable>
           </Title>
         )}
+        <div className="column-menu">
+          <MenuButton {...menu} className="menu-button">
+            <KebabHorizontalIcon size={20} />
+          </MenuButton>
+          <Menu {...menu}>
+            <MenuItem {...menu} onClick={startEditing}>
+              Edit column name
+            </MenuItem>
+            <MenuItem {...menu} onClick={tryDeleteColumn}>
+              Delete Column
+            </MenuItem>
+          </Menu>
+        </div>
       </Header>
-      <Cards>
+      <Cards isDragging={isDragging}>
         <DNDContainer
           groupName="column"
           getChildPayload={(index) => column.cardsIds[index]}
@@ -161,6 +205,8 @@ function Column({ columnId }: IProps) {
             showOnTop: true,
             className: "cards-drop-preview",
           }}
+          onDragStart={(p) => p.isSource && setIsDragging(true)}
+          onDragEnd={(p) => p.isSource && setIsDragging(false)}
           dragClass="card-ghost"
         >
           {column.cardsIds.map((cardId) => (
@@ -169,6 +215,7 @@ function Column({ columnId }: IProps) {
             </Draggable>
           ))}
         </DNDContainer>
+        <AddCard columnId={columnId} />
       </Cards>
     </Container>
   );

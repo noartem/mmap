@@ -31,7 +31,7 @@ const Title = styled.span`
     padding: 0.5em 0.75em;
     width: 100%;
     height: 100%;
-    font-size: 16px;
+    font-size: 14px;
     text-align: left;
   }
 `;

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { styled } from "linaria/react";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -8,6 +8,7 @@ import {
 } from "react-smooth-dnd";
 
 import { selectBoard, moveColumn } from "./boardSlice";
+import AddColumn from "./AddColumn";
 import Column from "./Column";
 
 const Container = styled.div<{ background: string }>`
@@ -36,6 +37,7 @@ const Columns = styled.ul`
 function Board() {
   const { columnOrder, background } = useSelector(selectBoard);
   const dispatch = useDispatch();
+  const [isDragging, setIsDragging] = useState(false);
 
   const onColumnDrop = ({ removedIndex, addedIndex }: DropResult) =>
     removedIndex !== null &&
@@ -61,12 +63,17 @@ function Board() {
             className: "columns-drop-preview",
           }}
         >
-          {columnOrder.map((columnId, index) => (
+          {columnOrder.map((columnId) => (
             <Draggable key={"column-" + columnId}>
-              <Column columnId={columnId} index={index} />
+              <Column
+                columnId={columnId}
+                isDragging={isDragging}
+                setIsDragging={setIsDragging}
+              />
             </Draggable>
           ))}
         </DNDContainer>
+        <AddColumn />
       </Columns>
     </Container>
   );

@@ -74,6 +74,11 @@ export const boardSlice = createSlice({
     },
     deleteColumn(state, columnId: PayloadAction<string>) {
       state.columnOrder.splice(state.columnOrder.indexOf(columnId.payload), 1);
+
+      state.columns[columnId.payload].cardsIds.forEach((cardId) => {
+        delete state.cards[cardId];
+      });
+
       delete state.columns[columnId.payload];
     },
     addCard(
@@ -191,6 +196,7 @@ export const {
   addColumn,
   editColumn,
   moveColumn,
+  deleteColumn,
   addCard,
   editCard,
   moveCard,
