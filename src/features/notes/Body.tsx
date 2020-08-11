@@ -12,6 +12,7 @@ import { selectNote, updateNote, deleteNote } from "./notesSlice";
 import { Code } from "./code";
 
 const stylesClass = css`
+  height: 100%;
   display: flex;
   flex-direction: column;
 

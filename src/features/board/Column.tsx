@@ -47,8 +47,10 @@ const Header = styled.div`
   }
 
   input {
-    font-weight: 400;
-    background: inherit;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 0.32em;
   }
 
   .column-menu {
@@ -72,7 +74,7 @@ const Header = styled.div`
 `;
 
 const Title = styled.h2`
-  margin: 0;
+  margin: 0.28em 0 0.26em 0.28em;
   display: flex;
 
   button {
@@ -124,8 +126,8 @@ function Column({ columnId, isDragging, setIsDragging }: IProps) {
   const dispatch = useDispatch();
   const menu = useMenuState();
 
-  const startEditing = () => {
-    setInputName(column.name);
+  const startEditing = async () => {
+    await setInputName(column.name);
     inputRef.current?.focus();
   };
 

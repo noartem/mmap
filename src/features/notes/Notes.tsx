@@ -9,7 +9,6 @@ import Body from "./Body";
 
 const stylesClass = css`
   display: flex;
-  height: calc(100vh - 2.6em);
 
   .left {
     width: 32%;
@@ -18,8 +17,9 @@ const stylesClass = css`
   }
 
   .right {
-    width: 68%;
-    height: 100%;
+    height: calc(100vh - 2.6em);
+    width: 100%;
+    overflow-x: auto;
   }
 `;
 

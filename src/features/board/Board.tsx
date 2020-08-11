@@ -13,8 +13,6 @@ import Column from "./Column";
 
 const Container = styled.div<{ background: string }>`
   background: ${(props) => props.background};
-  height: calc(100vh - 2.6em);
-  width: 100%;
   overflow-x: auto;
   overflow-y: hidden;
 `;
