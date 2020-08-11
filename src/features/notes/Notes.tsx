@@ -8,13 +8,18 @@ import Nav from "./Nav";
 import Body from "./Body";
 
 const stylesClass = css`
-  height: 100%;
+  display: flex;
+  height: calc(100vh - 2.6em);
 
-  .nav-and-body {
-    display: flex;
+  .left {
+    width: 32%;
+    border-right: 1px solid #006dff;
+    overflow-y: auto;
+  }
+
+  .right {
+    width: 68%;
     height: 100%;
-    height: calc(100vh - 6.07em);
-    border-top: 1px solid #006dff;
   }
 `;
 
@@ -23,10 +28,12 @@ function Notes() {
 
   return (
     <section className={stylesClass}>
-      <Search />
-      <div className="nav-and-body">
+      <div className="left">
+        <Search />
         <Nav url={url} />
+      </div>
 
+      <div className="right">
         <Switch>
           <Route exact path={path}>
             <ShortcutsInfo />

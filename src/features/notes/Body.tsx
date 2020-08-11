@@ -4,15 +4,14 @@ import { css } from "linaria";
 import Markdown from "markdown-to-jsx";
 import { Button } from "reakit/Button";
 import { Input } from "reakit/Input";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 
-import { useShortcut, useRoutePush } from "../../utils";
+import { useShortcut } from "../../utils";
 
 import { selectNote, updateNote, deleteNote } from "./notesSlice";
 import { Code } from "./code";
 
 const stylesClass = css`
-  width: 68%;
   display: flex;
   flex-direction: column;
 
@@ -57,7 +56,7 @@ function Body() {
   const { noteId } = useParams<{ noteId: string }>();
   const note = useSelector(selectNote(noteId));
 
-  const push = useRoutePush();
+  const { push } = useHistory();
   const dispatch = useDispatch();
 
   const [editingBody, setEditingBody] = useState("");

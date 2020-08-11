@@ -14,6 +14,8 @@ const styleClass = css`
   padding: 0.5em 0.75em;
   height: 2.4em;
 
+  border-bottom: 1px solid #006dff;
+
   input {
     border: none;
     margin: 0 0.5em 0 0 !important;

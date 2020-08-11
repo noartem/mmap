@@ -1,51 +1,44 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { css } from "linaria";
-import { Link } from "react-router-dom";
+import { styled } from "linaria/react";
+import { Link, useHistory } from "react-router-dom";
 
-import { useShortcut, useRoutePush } from "../../utils";
+import { useShortcut } from "../../utils";
 
 import { selectSearchingNotes } from "./notesSlice";
 
-const styleClass = css`
-  width: 32%;
-  border-right: 1px solid #006dff;
-  overflow-y: auto;
-  background: #f8f9fa !important;
+const Links = styled.ul`
+  margin: 0;
+  padding: 0;
 
-  ul {
-    margin: 0;
-    padding: 0;
+  li {
+    list-style: none;
+  }
+`;
 
-    li {
-      list-style: none;
+const NavLink = styled.a`
+  display: block;
+  padding: 0.5em 0.75em;
 
-      a {
-        display: block;
-        padding: 0.5em 0.75em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 18px;
+  text-decoration: none;
+  text-align: left;
+  color: inherit;
+  transition: 0.1s;
 
-        overflow: hidden;
-        text-overflow: ellipsis;
-        font-size: 16px;
-        text-decoration: none;
-        text-align: left;
-        color: inherit;
-        transition: 0.1s;
-
-        &:focus,
-        &:hover,
-        &:active {
-          background: #006dff;
-          color: white;
-        }
-      }
-    }
+  &:focus,
+  &:hover,
+  &:active {
+    background: #006dff;
+    color: white;
   }
 `;
 
 function useNoteShortcuts(url: string) {
   const notes = useSelector(selectSearchingNotes);
-  const push = useRoutePush();
+  const { push } = useHistory();
 
   const useShcut = (i: number) =>
     useShortcut(
@@ -72,14 +65,16 @@ function Nav({ url }: IProps) {
   useNoteShortcuts(url);
 
   return (
-    <div className={styleClass}>
-      <ul>
+    <div>
+      <Links>
         {notes.map((note) => (
           <li title={note.name} key={note.id}>
-            <Link to={`${url}/${note.id}`}>{note.name}</Link>
+            <Link component={NavLink} to={`${url}/${note.id}`}>
+              {note.name}
+            </Link>
           </li>
         ))}
-      </ul>
+      </Links>
     </div>
   );
 }

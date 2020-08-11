@@ -1,8 +1,8 @@
 import React, { Suspense, lazy } from "react";
-import { Switch, Route, Link } from "react-router-dom";
+import { Switch, Route, Link, useHistory } from "react-router-dom";
 import { css } from "linaria";
 import { BookIcon } from "@primer/octicons-react";
-import { useShortcut, useRoutePush } from "./utils";
+import { useShortcut } from "./utils";
 
 const Notes = lazy(() => import("./features/notes/Notes"));
 const Board = lazy(() => import("./features/board/Board"));
@@ -53,7 +53,7 @@ const stylesClass = css`
 `;
 
 function App() {
-  const push = useRoutePush();
+  const { push } = useHistory();
 
   useShortcut("ctrl+shift+1", () => push("/notes"), [push]);
   useShortcut("ctrl+shift+2", () => push("/board"), [push]);
