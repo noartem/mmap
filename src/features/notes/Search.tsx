@@ -1,11 +1,11 @@
 import React, { useRef } from "react";
 import { Button } from "reakit/Button";
 import { Input } from "reakit/Input";
-import { css } from "linaria";
+import { styled } from "linaria/react";
 
 import { useShortcut } from "../../utils";
 
-const styleClass = css`
+const Header = styled.header`
   display: flex;
   padding: 0.5em 0.75em;
   height: 2.4em;
@@ -35,7 +35,7 @@ function Search({ query, setQuery, addNote }: IProps) {
   useShortcut("alt+s", () => searchInput.current?.focus(), [searchInput]);
 
   return (
-    <header className={styleClass}>
+    <Header>
       <Input
         ref={searchInput}
         name="search"
@@ -46,7 +46,7 @@ function Search({ query, setQuery, addNote }: IProps) {
       <Button focusable disabled={query === ""} onClick={add}>
         Add
       </Button>
-    </header>
+    </Header>
   );
 }
 

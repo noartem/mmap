@@ -1,30 +1,28 @@
 import React from "react";
-import { css } from "linaria";
+import { styled } from "linaria/react";
 
-const styleClass = css`
-  p {
-    padding: 1em 1.5em;
-  }
+const P = styled.p`
+  padding: 1em 1.5em;
 `;
 
 export default function ShortcutsInfo() {
   return (
-    <div className={styleClass}>
-      <p>
+    <div>
+      <P>
         <b> Alt + S</b> focus search input
-      </p>
-      <p>
+      </P>
+      <P>
         <b> Control + Alt + $number</b> open <i>$number</i> note
-      </p>
-      <p>
+      </P>
+      <P>
         <b> Ctrl + B</b> toggle edit mode
-      </p>
-      <p>
+      </P>
+      <P>
         <b> Alt + I </b> delete note
-      </p>
-      <p>
+      </P>
+      <P>
         <b> Escape </b> close note
-      </p>
+      </P>
     </div>
   );
 }

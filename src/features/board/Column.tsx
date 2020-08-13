@@ -187,7 +187,7 @@ function Column({ columnId, isDragging, setIsDragging }: IProps) {
           <MenuButton {...menu} className="menu-button">
             <KebabHorizontalIcon size={20} />
           </MenuButton>
-          <Menu {...menu}>
+          <Menu {...menu} aria-label="Column controls">
             <MenuItem {...menu} onClick={startEditing}>
               Edit column name
             </MenuItem>

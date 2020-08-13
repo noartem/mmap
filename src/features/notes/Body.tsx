@@ -1,6 +1,6 @@
 import React, { useState, useRef, Fragment } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { css } from "linaria";
+import { styled } from "linaria/react";
 import Markdown from "markdown-to-jsx";
 import { Button } from "reakit/Button";
 import { Input } from "reakit/Input";
@@ -11,50 +11,47 @@ import { useShortcut } from "../../utils";
 import { selectNote, updateNote, deleteNote } from "./notesSlice";
 import { Code } from "./code";
 
-const stylesClass = css`
+const Container = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
+`;
 
-  textarea {
-    width: 100%;
-    height: 100%;
-    border: none;
-  }
+const Textarea = styled.textarea`
+  width: 100%;
+  height: 100%;
+  border: none;
+  padding: 0.5em 0.75em;
+`;
 
-  #body_content {
-    overflow: auto;
-  }
+const Content = styled.div`
+  overflow: auto;
+  padding: 0.5em 0.75em;
+`;
 
-  #body_content,
-  textarea,
-  nav {
-    padding: 0.5em 0.75em;
-  }
+const Nav = styled.nav`
+  top: 0;
+  position: sticky;
+  padding: 0.5em 0.75em;
 
-  nav {
-    top: 0;
-    position: sticky;
+  background: #fff;
+  border-bottom: 1px solid #006dff;
 
-    background: #fff;
-    border-bottom: 1px solid #006dff;
+  display: flex;
+`;
 
-    display: flex;
+const Title = styled.h2`
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: auto 0;
+`;
 
-    h1 {
-      overflow: hidden;
-      text-overflow: ellipsis;
-      margin: auto 0;
-    }
+const Controls = styled.div`
+  margin-left: auto;
+  display: flex;
 
-    .controls {
-      margin-left: auto;
-      display: flex;
-
-      button {
-        margin-left: 0.5em;
-      }
-    }
+  button {
+    margin-left: 0.5em;
   }
 `;
 
@@ -110,10 +107,10 @@ function Body() {
   }
 
   return (
-    <div className={stylesClass}>
-      <nav>
+    <Container>
+      <Nav>
         {notEditing ? (
-          <h1 title={note.name}>{note.name}</h1>
+          <Title title={note.name}>{note.name}</Title>
         ) : (
           <Input
             value={editingName}
@@ -121,7 +118,7 @@ function Body() {
           />
         )}
 
-        <div className="controls">
+        <Controls>
           {notEditing ? (
             <Fragment>
               <Button onClick={editNote}>Edit</Button>
@@ -135,10 +132,10 @@ function Body() {
           ) : (
             <Button onClick={saveNote}>Save</Button>
           )}
-        </div>
-      </nav>
+        </Controls>
+      </Nav>
       {notEditing ? (
-        <div id="body_content" className="markdown-body">
+        <Content className="markdown-body">
           <Markdown
             children={note.body}
             options={{
@@ -149,19 +146,19 @@ function Body() {
               },
             }}
           />
-        </div>
+        </Content>
       ) : (
         <Input
           name="body"
           placeholder="Some note body.."
           ref={bodyInput}
           value={editingBody}
-          as="textarea"
+          as={Textarea}
           // @ts-ignore
           onChange={(e) => setEditingBody(e.target.value)}
         />
       )}
-    </div>
+    </Container>
   );
 }
 

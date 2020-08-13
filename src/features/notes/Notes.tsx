@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { css } from "linaria";
+import { styled } from "linaria/react";
 import { useDispatch } from "react-redux";
 import { Switch, Route, useRouteMatch } from "react-router-dom";
 
@@ -9,7 +9,7 @@ import Search from "./Search";
 import Nav from "./Nav";
 import Body from "./Body";
 
-const stylesClass = css`
+const Section = styled.section`
   @media (min-width: 992px) {
     display: flex;
 
@@ -44,7 +44,7 @@ function Notes() {
   };
 
   return (
-    <section className={stylesClass}>
+    <Section>
       <div className="left">
         <Search
           query={query}
@@ -64,7 +64,7 @@ function Notes() {
           </Route>
         </Switch>
       </div>
-    </section>
+    </Section>
   );
 }
 
