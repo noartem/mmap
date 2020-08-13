@@ -36,6 +36,7 @@ const Title = styled.h3`
 
 const CardDialog = styled.div`
   width: 768px;
+  height: calc(100vh - 56px);
   max-width: calc(100vw - 4em);
 `;
 

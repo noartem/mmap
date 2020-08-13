@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { css } from "linaria";
+import { useDispatch } from "react-redux";
 import { Switch, Route, useRouteMatch } from "react-router-dom";
 
+import { addNote } from "./notesSlice";
 import ShortcutsInfo from "./ShortcutsInfo";
 import Search from "./Search";
 import Nav from "./Nav";
@@ -32,13 +34,24 @@ const stylesClass = css`
 `;
 
 function Notes() {
-  let { path, url } = useRouteMatch();
+  const [query, setQuery] = useState("");
+  const { path, url } = useRouteMatch();
+  const dispatch = useDispatch();
+
+  const goAddNote = async (query: string) => {
+    await dispatch(addNote(query));
+    setQuery("");
+  };
 
   return (
     <section className={stylesClass}>
       <div className="left">
-        <Search />
-        <Nav url={url} />
+        <Search
+          query={query}
+          setQuery={(e) => setQuery(e)}
+          addNote={goAddNote}
+        />
+        <Nav url={url} query={query} />
       </div>
 
       <div className="right">

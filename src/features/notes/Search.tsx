@@ -1,13 +1,9 @@
 import React, { useRef } from "react";
-import { connect, ConnectedProps } from "react-redux";
 import { Button } from "reakit/Button";
 import { Input } from "reakit/Input";
 import { css } from "linaria";
 
 import { useShortcut } from "../../utils";
-
-import { RootState } from "../../app/store";
-import { search, addNote, selectNotesQuery } from "./notesSlice";
 
 const styleClass = css`
   display: flex;
@@ -22,8 +18,19 @@ const styleClass = css`
   }
 `;
 
-function Search({ query, search, addNote }: IProps) {
+interface IProps {
+  query: string;
+  setQuery: (query: string) => void;
+  addNote: (query: string) => void;
+}
+
+function Search({ query, setQuery, addNote }: IProps) {
   const searchInput = useRef<HTMLInputElement>(null);
+
+  const add = async () => {
+    await addNote(query);
+    setQuery("");
+  };
 
   useShortcut("alt+s", () => searchInput.current?.focus(), [searchInput]);
 
@@ -34,23 +41,13 @@ function Search({ query, search, addNote }: IProps) {
         name="search"
         placeholder="Search... (Alt + S to focus)"
         value={query}
-        onChange={(e) => search(e.target.value)}
+        onChange={(e) => setQuery(e.target.value)}
       />
-      <Button focusable disabled={query === ""} onClick={() => addNote(query)}>
+      <Button focusable disabled={query === ""} onClick={add}>
         Add
       </Button>
     </header>
   );
 }
 
-const connector = connect(
-  (state: RootState) => ({ query: selectNotesQuery(state) }),
-  (dispatch) => ({
-    search: (query: string) => dispatch(search(query)),
-    addNote: (query: string) => dispatch(addNote(query)),
-  })
-);
-
-type IProps = ConnectedProps<typeof connector>;
-
-export default connector(Search);
+export default Search;

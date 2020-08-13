@@ -8,6 +8,14 @@ import { useShortcut } from "../../utils";
 import { selectSearchingNotes } from "./notesSlice";
 
 const Links = styled.ul`
+  width: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  @media (min-width: 992px) {
+    height: calc(100vh - 6.07em);
+  }
+
   margin: 0;
   padding: 0;
 
@@ -59,8 +67,13 @@ function useNoteShortcuts(url: string) {
   useShcut(9);
 }
 
-function Nav({ url }: IProps) {
-  const notes = useSelector(selectSearchingNotes);
+interface IProps {
+  url: string;
+  query: string;
+}
+
+function Nav({ url, query }: IProps) {
+  const notes = useSelector(selectSearchingNotes(query));
 
   useNoteShortcuts(url);
 
@@ -77,10 +90,6 @@ function Nav({ url }: IProps) {
       </Links>
     </div>
   );
-}
-
-interface IProps {
-  url: string;
 }
 
 export default Nav;

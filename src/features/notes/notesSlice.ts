@@ -4,13 +4,11 @@ import { nanoid } from "nanoid";
 import { RootState } from "../../app/store";
 import { Note } from "./note";
 
-interface NotesState {
-  query: string;
+export interface NotesState {
   notes: Array<Note>;
 }
 
 const initialState: NotesState = {
-  query: "",
   notes: [],
 };
 
@@ -18,9 +16,6 @@ export const notesSlice = createSlice({
   name: "notes",
   initialState,
   reducers: {
-    search: (state, searchString: PayloadAction<string>) => {
-      state.query = searchString.payload;
-    },
     addNote: (state, noteName: PayloadAction<string>) => {
       const newNote = {
         id: nanoid(8),
@@ -29,7 +24,6 @@ export const notesSlice = createSlice({
       };
 
       state.notes.push(newNote);
-      state.query = "";
     },
     updateNote: (state, newNote: PayloadAction<Note>) => {
       for (const note of state.notes) {
@@ -47,12 +41,10 @@ export const notesSlice = createSlice({
   },
 });
 
-export const { search, addNote, updateNote, deleteNote } = notesSlice.actions;
+export const { addNote, updateNote, deleteNote } = notesSlice.actions;
 
-export const selectNotesQuery = (state: RootState) => state.notes.query;
-
-export const selectSearchingNotes = (state: RootState) =>
-  state.notes.notes.filter((note) => note.name.includes(state.notes.query));
+export const selectSearchingNotes = (query: string) => (state: RootState) =>
+  state.notes.notes.filter((note) => note.name.includes(query));
 
 export const selectNote = (noteId: string) => (state: RootState) =>
   state.notes.notes.find((note) => note.id === noteId);

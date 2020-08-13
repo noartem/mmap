@@ -41,6 +41,9 @@ function Home() {
         <p>
           By <a href="https://github.com/noartem">@noartem</a>
         </p>
+        <p>
+          Source <a href="https://github.com/noartem/mmap">noartem/mmap</a>
+        </p>
       </Text>
     </Container>
   );
