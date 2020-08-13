@@ -33,7 +33,12 @@ const stylesClass = css`
   }
 
   nav {
+    top: 0;
+    position: sticky;
+
+    background: #fff;
     border-bottom: 1px solid #006dff;
+
     display: flex;
 
     h1 {

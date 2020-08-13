@@ -5,7 +5,9 @@ import { BookIcon } from "@primer/octicons-react";
 
 import { useShortcut } from "./utils";
 import Loading from "./Loading";
+import ScrollToTop from "./ScrollToTop";
 
+const Home = lazy(() => import("./Home"));
 const Notes = lazy(() => import("./features/notes/Notes"));
 const Board = lazy(() => import("./features/board/Board"));
 
@@ -87,14 +89,16 @@ function App() {
       </Nav>
 
       <Main>
-        {/* <Loading /> */}
         <Suspense fallback={<Loading />}>
           <Switch>
             <Route path="/notes" render={() => <Notes />} />
             <Route path="/board" render={() => <Board />} />
+            <Route path="/" render={() => <Home />} />
           </Switch>
         </Suspense>
       </Main>
+
+      <ScrollToTop />
     </div>
   );
 }

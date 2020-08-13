@@ -1,7 +1,13 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { styled } from "linaria/react";
-import { Clickable } from "reakit/Clickable";
+import {
+  useDialogState,
+  Dialog,
+  DialogDisclosure,
+  DialogBackdrop,
+} from "reakit/Dialog";
+import { GhostButton } from "../../utils";
 
 import { selectCard } from "./boardSlice";
 
@@ -19,33 +25,36 @@ const Container = styled.div`
   }
 `;
 
-const Title = styled.span`
+const Title = styled.h3`
   margin: 0;
-
   button {
-    margin: 0;
-    border: none;
-    background: inherit;
-    padding: 0;
-    cursor: pointer;
-    padding: 0.5em 0.75em;
-    width: 100%;
-    height: 100%;
     font-size: 14px;
-    text-align: left;
+    font-weight: normal;
+    text-align: left !important;
   }
+`;
+
+const CardDialog = styled.div`
+  width: 768px;
+  max-width: calc(100vw - 4em);
 `;
 
 function Card({ cardId }: IProps) {
   const card = useSelector(selectCard(cardId));
+  const dialog = useDialogState();
 
   return (
     <Container>
       <Title>
-        <Clickable onClick={() => console.log("Open card #" + cardId)}>
-          {card.name} #{card.id}
-        </Clickable>
+        <DialogDisclosure as={GhostButton} {...dialog}>
+          {card.name}
+        </DialogDisclosure>
       </Title>
+      <DialogBackdrop {...dialog}>
+        <Dialog {...dialog} aria-label="Welcome">
+          <CardDialog>Welcome to Reakit!</CardDialog>
+        </Dialog>
+      </DialogBackdrop>
     </Container>
   );
 }

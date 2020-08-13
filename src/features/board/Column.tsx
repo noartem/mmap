@@ -30,7 +30,7 @@ interface IProps {
 
 const Container = styled.li`
   height: min-content;
-  width: 270px;
+  width: 240px;
   margin: 0.5em;
   padding: 0.5em 0.75em;
   background: #ebecf0;

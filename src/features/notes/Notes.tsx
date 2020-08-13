@@ -8,18 +8,26 @@ import Nav from "./Nav";
 import Body from "./Body";
 
 const stylesClass = css`
-  display: flex;
+  @media (min-width: 992px) {
+    display: flex;
 
-  .left {
-    width: 32%;
-    border-right: 1px solid #006dff;
-    overflow-y: auto;
+    .left {
+      width: 32%;
+      border-right: 1px solid #006dff;
+      overflow-y: auto;
+    }
+
+    .right {
+      height: calc(100vh - 2.6em);
+      width: 100%;
+      overflow-x: auto;
+    }
   }
 
-  .right {
-    height: calc(100vh - 2.6em);
-    width: 100%;
-    overflow-x: auto;
+  @media (max-width: 992px) {
+    .left {
+      border-bottom: 1px solid #006dff;
+    }
   }
 `;
 

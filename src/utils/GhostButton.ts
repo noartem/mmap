@@ -4,11 +4,12 @@ import { Clickable } from "reakit/Clickable";
 export const GhostButton = styled(Clickable)`
   display: flex;
   width: 100%;
-  border: none;
+  border: none !important;
   padding: 0;
-  background: none;
+  background: none !important;
+  color: inherit !important;
   cursor: pointer;
   font-size: 14px;
   font-weight: 600;
-  text-align: center;
+  text-align: left;
 `;

@@ -13,8 +13,7 @@ import Column from "./Column";
 
 const Container = styled.div<{ background: string }>`
   background: ${(props) => props.background};
-  overflow-x: auto;
-  overflow-y: hidden;
+  overflow: auto;
 `;
 
 const Columns = styled.ul`
