@@ -44,8 +44,8 @@ const NavLink = styled.a`
   }
 `;
 
-function useNoteShortcuts(url: string) {
-  const notes = useSelector(selectSearchingNotes);
+function useNoteShortcuts({ url, query }: IProps) {
+  const notes = useSelector(selectSearchingNotes(query));
   const { push } = useHistory();
 
   const useShcut = (i: number) =>
@@ -75,7 +75,7 @@ interface IProps {
 function Nav({ url, query }: IProps) {
   const notes = useSelector(selectSearchingNotes(query));
 
-  useNoteShortcuts(url);
+  useNoteShortcuts({ url, query });
 
   return (
     <div>

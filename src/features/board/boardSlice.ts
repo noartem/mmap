@@ -4,7 +4,7 @@ import { RootState } from "../../app/store";
 import { Columns, Card, Cards } from "./column";
 import { nanoid } from "nanoid";
 
-interface BoardState {
+export interface BoardState {
   cards: Cards;
   columns: Columns;
   columnOrder: string[];

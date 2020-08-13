@@ -31,7 +31,7 @@ const Spinner = styled.div`
     border-radius: 50%;
     background: #fff;
     margin: -0.8em 0 0 -0.8em;
-    background: #006dff;
+    background: rgba(0, 109, 255, 0.6);
   }
   .lds-roller div:nth-child(1) {
     animation-delay: -0.036s;
