@@ -13,8 +13,7 @@ const Board = lazy(() => import("./features/board/Board"));
 
 const Nav = styled.nav`
   display: flex;
-  padding: 0 0.75em 0 0;
-  border-bottom: 1px solid #006dff;
+  padding: 0;
   overflow-y: auto;
   background: #f8f9fa !important;
 
@@ -30,16 +29,23 @@ const Nav = styled.nav`
   }
 `;
 
-const Links = styled.ul`
-  display: flex;
+const Links = styled.div`
+  border-bottom: 1px solid #006dff;
+  width: 100%;
 
-  list-style: none;
-  margin: auto 0.75em;
-  padding: 0;
+  ul {
+    display: block;
 
-  li {
-    margin: 0;
-    padding: 0.5em 0.75em;
+    list-style: none;
+    margin: auto 0.75em;
+    padding: 0;
+
+    li {
+      font-size: 18px;
+      display: inline-block;
+      margin: 0;
+      padding: 0.5em 0.75em;
+    }
   }
 `;
 
@@ -79,12 +85,14 @@ function App() {
           </Link>
         </Logo>
         <Links>
-          <li>
-            <Link to="/notes">Notes</Link>
-          </li>
-          <li>
-            <Link to="/board">Board</Link>
-          </li>
+          <ul>
+            <li>
+              <Link to="/notes">Notes</Link>
+            </li>
+            <li>
+              <Link to="/board">Board</Link>
+            </li>
+          </ul>
         </Links>
       </Nav>
 
