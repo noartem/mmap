@@ -7,9 +7,10 @@ import {
   DialogDisclosure,
   DialogBackdrop,
 } from "reakit/Dialog";
-import { GhostButton } from "../../utils";
 
 import { selectCard } from "./boardSlice";
+import CardModal from "./CardModal";
+import { GhostButton } from "../../components";
 
 interface IProps {
   cardId: string;
@@ -34,12 +35,6 @@ const Title = styled.h3`
   }
 `;
 
-const CardDialog = styled.div`
-  width: 768px;
-  height: calc(100vh - 56px);
-  max-width: calc(100vw - 4em);
-`;
-
 function Card({ cardId }: IProps) {
   const card = useSelector(selectCard(cardId));
   const dialog = useDialogState();
@@ -53,7 +48,7 @@ function Card({ cardId }: IProps) {
       </Title>
       <DialogBackdrop {...dialog}>
         <Dialog {...dialog} aria-label="Welcome">
-          <CardDialog>Welcome to Reakit!</CardDialog>
+          <CardModal card={card} close={dialog.toggle} />
         </Dialog>
       </DialogBackdrop>
     </Container>

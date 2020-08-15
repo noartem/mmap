@@ -6,7 +6,7 @@ import { XIcon, DiffAddedIcon } from "@primer/octicons-react";
 import { useDispatch } from "react-redux";
 
 import { addCard } from "./boardSlice";
-import { GhostButton } from "../../utils";
+import { GhostButton } from "../../components";
 
 const Container = styled.li`
   margin-top: 0.5em !important;

@@ -13,7 +13,7 @@ const Container = styled.div`
     max-width: 100%;
   }
 
-  @media (min-width: 992px) {
+  @media (min-width: 767px) {
     display: flex;
   }
 `;
@@ -37,7 +37,7 @@ function Home() {
     <Container>
       <img src={logo} alt="Mind map logo" />
       <Text>
-        <p>Powerful self-managment tools</p>
+        <p>Powerful self-management tools</p>
         <p>
           By <a href="https://github.com/noartem">@noartem</a>
         </p>

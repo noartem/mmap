@@ -1,25 +1,12 @@
 import React, { useState, useReducer, useRef } from "react";
 import { styled } from "linaria/react";
 import { Button } from "reakit/Button";
-import { Clickable } from "reakit/Clickable";
 import { Input } from "reakit/Input";
 import { XIcon, DiffAddedIcon } from "@primer/octicons-react";
 import { useDispatch } from "react-redux";
 
 import { addColumn } from "./boardSlice";
-
-const GhostButton = styled(Clickable)`
-  color: #fff;
-  display: flex;
-  width: 100%;
-  border: none;
-  padding: 0;
-  background: none;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 600;
-  text-align: center;
-`;
+import { GhostButton } from "../../components";
 
 const Container = styled.li<{ background: string }>`
   width: 270px;

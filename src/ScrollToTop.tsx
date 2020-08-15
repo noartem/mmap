@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { styled } from "linaria/react";
 import { ChevronUpIcon } from "@primer/octicons-react";
 
-import { GhostButton } from "./utils";
+import { GhostButton } from "./components";
 
 const Floating = styled.div`
   @media (min-width: 922px) {

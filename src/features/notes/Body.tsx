@@ -1,7 +1,6 @@
-import React, { useState, useRef, Fragment } from "react";
+import React, { useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { styled } from "linaria/react";
-import Markdown from "markdown-to-jsx";
 import { Button } from "reakit/Button";
 import { Input } from "reakit/Input";
 import { useParams, useHistory } from "react-router-dom";
@@ -9,7 +8,7 @@ import { useParams, useHistory } from "react-router-dom";
 import { useShortcut } from "../../utils";
 
 import { selectNote, updateNote, deleteNote } from "./notesSlice";
-import { Code } from "./code";
+import { Markdown } from "../../components";
 
 const Container = styled.div`
   height: 100%;
@@ -21,11 +20,6 @@ const Textarea = styled.textarea`
   width: 100%;
   height: 100%;
   border: none;
-  padding: 0.5em 0.75em;
-`;
-
-const Content = styled.div`
-  overflow: auto;
   padding: 0.5em 0.75em;
 `;
 
@@ -120,7 +114,7 @@ function Body() {
 
         <Controls>
           {notEditing ? (
-            <Fragment>
+            <>
               <Button onClick={editNote}>Edit</Button>
               <Button
                 onClick={tryDeleteNote}
@@ -128,25 +122,14 @@ function Body() {
               >
                 Delete
               </Button>
-            </Fragment>
+            </>
           ) : (
             <Button onClick={saveNote}>Save</Button>
           )}
         </Controls>
       </Nav>
       {notEditing ? (
-        <Content className="markdown-body">
-          <Markdown
-            children={note.body}
-            options={{
-              overrides: {
-                code: {
-                  component: Code,
-                },
-              },
-            }}
-          />
-        </Content>
+        <Markdown text={note.body} />
       ) : (
         <Input
           name="body"

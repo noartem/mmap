@@ -10,7 +10,7 @@ import Nav from "./Nav";
 import Body from "./Body";
 
 const Section = styled.section`
-  @media (min-width: 992px) {
+  @media (min-width: 767px) {
     display: flex;
 
     .left {
@@ -26,7 +26,7 @@ const Section = styled.section`
     }
   }
 
-  @media (max-width: 992px) {
+  @media (max-width: 767px) {
     .left {
       border-bottom: 1px solid #006dff;
     }

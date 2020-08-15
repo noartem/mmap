@@ -12,7 +12,11 @@ const Links = styled.ul`
   overflow-y: auto;
   overflow-x: hidden;
 
-  @media (min-width: 992px) {
+  @media (max-width: 767px) {
+    max-height: 28vh;
+  }
+
+  @media (min-width: 767px) {
     height: calc(100vh - 6.07em);
   }
 

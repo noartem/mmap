@@ -1,8 +1,6 @@
-import React, { useState, useRef } from "react";
+import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { styled } from "linaria/react";
-import { Clickable } from "reakit/Clickable";
-import { Input } from "reakit/Input";
 import { useMenuState, Menu, MenuItem, MenuButton } from "reakit/Menu";
 import { GrabberIcon, KebabHorizontalIcon } from "@primer/octicons-react";
 import {
@@ -21,6 +19,7 @@ import {
 } from "./boardSlice";
 import AddCard from "./AddCard";
 import Card from "./Card";
+import { EditableTitle } from "../../components";
 
 interface IProps {
   columnId: string;
@@ -46,13 +45,6 @@ const Header = styled.div`
     margin: auto 0;
   }
 
-  input {
-    font-family: inherit;
-    font-size: 14px;
-    font-weight: 600;
-    padding: 0.32em;
-  }
-
   .column-menu {
     display: flex;
     margin: 0 0 0 auto;
@@ -70,22 +62,6 @@ const Header = styled.div`
         display: none;
       }
     }
-  }
-`;
-
-const Title = styled.h2`
-  margin: 0.28em 0 0.26em 0.28em;
-  display: flex;
-
-  button {
-    border: none;
-    background: inherit;
-    cursor: pointer;
-    margin: auto;
-    padding: 0;
-    font-family: inherit;
-    font-size: 14px;
-    font-weight: 600;
   }
 `;
 
@@ -120,21 +96,11 @@ const Cards = styled.ul<{ isDragging: boolean }>`
 
 function Column({ columnId, isDragging, setIsDragging }: IProps) {
   const column = useSelector(selectColumn(columnId));
-  const inputRef = useRef<HTMLInputElement>(null);
-  const [inputName, setInputName] = useState("");
-
   const dispatch = useDispatch();
   const menu = useMenuState();
 
-  const startEditing = async () => {
-    await setInputName(column.name);
-    inputRef.current?.focus();
-  };
-
-  const saveName = () => {
-    dispatch(editColumn({ columnId, newName: inputName }));
-    setInputName("");
-  };
+  const saveName = (name: string) =>
+    dispatch(editColumn({ columnId, newName: name }));
 
   const tryDeleteColumn = () =>
     window.confirm("Are you sure?") && dispatch(deleteColumn(columnId));
@@ -171,26 +137,12 @@ function Column({ columnId, isDragging, setIsDragging }: IProps) {
         <span className="column-drag-handle">
           <GrabberIcon size={18} />
         </span>
-        {inputName !== "" ? (
-          <Input
-            ref={inputRef}
-            onKeyDown={(e) => e.key === "Enter" && saveName()}
-            onChange={(e) => setInputName(e.target.value)}
-            value={inputName}
-          />
-        ) : (
-          <Title>
-            <Clickable onClick={startEditing}>{column.name}</Clickable>
-          </Title>
-        )}
+        <EditableTitle name={column.name} saveName={saveName} />
         <div className="column-menu">
           <MenuButton {...menu} className="menu-button">
             <KebabHorizontalIcon size={20} />
           </MenuButton>
           <Menu {...menu} aria-label="Column controls">
-            <MenuItem {...menu} onClick={startEditing}>
-              Edit column name
-            </MenuItem>
             <MenuItem {...menu} onClick={tryDeleteColumn}>
               Delete Column
             </MenuItem>
